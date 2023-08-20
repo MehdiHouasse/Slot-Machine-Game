@@ -1,0 +1,118 @@
+/* Reset default margin and padding */
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+/* Global styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+}
+
+/* Slot machine container */
+.slot-machine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: lightgrey;
+}
+
+/* Reels container */
+.reels-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+/* Reel */
+.reel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  background-color: white;
+  border: 20px solid rgba(245, 5, 5, 0.92);
+  padding: 150px;
+  width: 150px;
+  /* Adjust reel width */
+  height: 300px;
+  /* Adjust reel height */
+  overflow: hidden;
+  /* Hide overflowing symbols */
+}
+
+/* Symbols */
+.symbol {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  /* Adjust symbol height */
+  width: 100px;
+  /* Adjust symbol width */
+  opacity: 0;
+  /* Hide symbols initially */
+}
+
+/* Spin button */
+.spin-button {
+  display: inline-block;
+  width: 100px;
+  height: 40px;
+  background-color: #ffa500;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Spin animation */
+@keyframes spin {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-900px);
+    /* Adjust to the desired spin distance */
+  }
+}
+
+/* Stop animation */
+@keyframes stop {
+  0% {
+    transform: translateY(-900px);
+    /* Start from the spin's end position */
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Apply animations to symbols */
+.spin-button.clicked~.reels-container .reel .symbol {
+  animation: spin 3s cubic-bezier(0.35, 0.65, 0.25, 1) forwards;
+}
+
+.spin-button.stopped~.reels-container .reel .symbol {
+  animation: stop 1s ease-out forwards;
+}
+
+/* Button animation */
+.spin-button:hover {
+  background-color: #ff8c00;
+}
