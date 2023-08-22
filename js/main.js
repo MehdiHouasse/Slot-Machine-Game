@@ -1,12 +1,13 @@
 /*----- constants -----*/
 const SM_LOOKUP = {
-  bar: { img: 'imgs/bar.png', two: 1,three: 5},
-  bell: { img: 'imgs/bell.png' },
-  cherries: { img: 'imgs/cherries.png' },
-  lemon: { img: 'imgs/lemon.png' },
-  seven: { img: 'imgs/seven.png' },
+  bar: { img: 'imgs/bar.png', two: 1, three: 2 },
+  bell: { img: 'imgs/bell.png', two: 1, three: 4 },
+  cherries: { img: 'imgs/cherries.png', two: 1, three: 2 },
+  lemon: { img: 'imgs/lemon.png', two: 1, three: 3 },
+  seven: { img: 'imgs/seven.png', two: 1, three: 5 },
 };
-const SM_RATIO = ['seven', 'bell', 'bell', 'lemon', 'lemon','lemon',];
+
+const SM_RATIO = ['seven', 'bell', 'bell', 'lemon', 'lemon', 'lemon', 'bar', 'bar', 'bar', 'bar', 'cherries', 'cherries', 'cherries', 'cherries', 'cherries'];
 
 /*----- state variables -----*/
 let playerBalance;
@@ -16,11 +17,10 @@ let winningAmount;
 
 /*----- cached elements  -----*/
 const reels = document.querySelectorAll('.reel');
-const pScoreEl = document.getElementById('p-score');
 const spinButton = document.querySelector('.spin-button');
 
 /*----- event listeners -----*/
-document.querySelector('.spin-button').addEventListener('click', handleSpin);
+spinButton.addEventListener('click', handleSpin);
 
 /*----- functions -----*/
 
@@ -28,53 +28,16 @@ function init() {
   playerBalance = 100;
   betAmount = 20;
   reelPositions = [];
-  getSpinResults();
   winningAmount = 0;
-  updateReelsAnimation();
-  updateSymbolImages();
   render();
-}
-
-
-function updateSymbolImages() {
-  // const symbolContainers = document.querySelectorAll('.symbol');
-  // symbolContainers.forEach((container, index) => {
-  //   const symbolName = Object.keys(SM_LOOKUP)[index];
-  //   const symbolImage = SM_LOOKUP[symbolName].img;
-  //   container.querySelector('img').src = symbolImage;
-  // });
 }
 
 function render() {
   updateReelsAnimation();
   const outcome = getWinner();
-  //updateWinningDisplay(outcome);
+  // updateWinningDisplay(outcome);
   // ... (other code to update the UI)
 }
-
-
-/*function updateWinningDisplay(outcome) {
-  const resultDisplay = document.querySelector('.result-display');
-
-  if (outcome === 'win') {
-    resultDisplay.textContent = 'You won!';
-    resultDisplay.style.color = 'black';
-    resultDisplay.style.backgroundColor = 'rgba(0, 255, 0, 0.8)';
-    resultDisplay.style.border = '2px solid green';
-  } else if (outcome === 'lose') {
-    resultDisplay.textContent = 'You lost!';
-    resultDisplay.style.color = 'black';
-    resultDisplay.style.backgroundColor = 'rgba(255, 0, 0, 0.8)';
-    resultDisplay.style.border = '2px solid red';
-  } else {
-    resultDisplay.textContent = 'Slot Machine';
-    resultDisplay.style.color = 'white';
-    resultDisplay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-    resultDisplay.style.border = 'none';
-  }
-}*/
-
-
 
 function handleSpin() {
   if (playerBalance < betAmount) {
@@ -84,7 +47,7 @@ function handleSpin() {
 
   playerBalance -= betAmount;
 
-  getSpinResults();
+  getWinner(); // No need to call getSpinResults here
 
   updateReelsAnimation();
 
@@ -92,8 +55,8 @@ function handleSpin() {
     stopReels();
   }, 3000);
 
-  winningAmount = 0;
   playerBalance += winningAmount;
+  winningAmount = 0; // Move this line after updating the balance
 
   render();
 }
@@ -115,66 +78,41 @@ function stopReels() {
     });
   });
 
-  const outcome = getWinner();
-  if (outcome === 'win') {
-    // Update winning amount and player balance
-    winningAmount = calculateWinningAmount();
-    playerBalance += winningAmount;
-  }
-
   render();
-}
-
-function getSpinResults() {
-  for (let i=0;i<3;i++){
-    const randomIndex = Math.floor(Math.random() * SM_RATIO.length);
-    reelPositions[i] = SM_RATIO[randomIndex];
-  }
 }
 
 function getWinner() {
   const symbolCounts = {};
 
-  // Count the occurrences of each symbol
-  reelPositions.forEach(position => {
-    symbolCounts[position] = (symbolCounts[position] || 0) + 1;
-  });
+  for (let i = 0; i < 3; i++) {
+    const randomIndex = Math.floor(Math.random() * SM_RATIO.length);
+    reelPositions[i] = SM_RATIO[randomIndex];
+    symbolCounts[reelPositions[i]] = (symbolCounts[reelPositions[i]] || 0) + 1;
+  }
 
   const winningCombinations = [
     { symbols: ['bar', 'bar', 'bar'], outcome: 'win' },
     { symbols: ['bell', 'bell', 'bell'], outcome: 'win' },
-    // Add more winning combinations here
+    { symbols: ['cherries', 'cherries', 'cherries'], outcome: 'win' },
+    { symbols: ['seven', 'seven', 'seven'], outcome: 'win' },
+    { symbols: ['lemon', 'lemon', 'lemon'], outcome: 'win' },
+
   ];
 
-  // winning combination matches the reel positions
   const winningCombination = winningCombinations.find(combination => {
     return combination.symbols.every(symbol => symbolCounts[symbol] === 3);
   });
 
+  winningAmount = winningCombination ? calculateWinningAmount() : 0;
   return winningCombination ? winningCombination.outcome : 'lose';
 }
 
-
 function calculateWinningAmount() {
-  const outcome = getWinner();
-
-  if (outcome === 'win') {
-    // Define the payouts for each winning combination
-    const payouts = {
-      'bar': 10,    //
-      'bell': 20,   //
-
-    };
-
-    // Calculate the total winning amount based on the symbols and payouts
-    const symbolsInWinningCombination = reelPositions[0];
-    const payoutMultiplier = payouts[symbolsInWinningCombination];
-    return betAmount * payoutMultiplier;
-  }
-
-  return 0; // No winnings for now
+  const symbolsInWinningCombination = reelPositions[0];
+  const occurrenceCount = reelPositions.filter(symbol => symbol === symbolsInWinningCombination).length;
+  const payoutMultiplier = SM_LOOKUP[symbolsInWinningCombination].three;
+  return betAmount * payoutMultiplier * occurrenceCount;
 }
-
 
 // Initialize the game
 init();
