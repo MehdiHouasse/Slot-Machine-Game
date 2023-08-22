@@ -16,11 +16,15 @@ let reelPositions;
 let winningAmount;
 
 /*----- cached elements  -----*/
-const reels = document.querySelectorAll('.reel');
-const spinButton = document.querySelector('.spin-button');
+//const pResultEl = document.getElementById('p-result');
+const reels = document.querySelectorAll('.box');
+const spinButton = document.querySelector('.buttons');
+document.querySelectorAll('.door');
 
 /*----- event listeners -----*/
-spinButton.addEventListener('click', handleSpin);
+document.querySelector('#spinner').addEventListener('click', handleSpin);
+document.querySelector('#reseter').addEventListener('click', init);
+
 
 /*----- functions -----*/
 
@@ -29,16 +33,31 @@ function init() {
   betAmount = 20;
   reelPositions = [];
   winningAmount = 0;
+  currentSymbolIndex = 0;
+  startSpinAnimation();
   render();
 }
-
+function renderResults() {
+  pResultEl.src = RPS_LOOKUP[results.p].img;
+  pResultEl.style.borderColor = winner === 'p' ? 'grey' : 'white';
+}
 function render() {
   updateReelsAnimation();
   const outcome = getWinner();
-  // updateWinningDisplay(outcome);
-  // ... (other code to update the UI)
-}
+  const winningAmountDisplay = document.getElementById('winning-amount-display');
+  winningAmountDisplay.textContent = `Winning Amount: $${winningAmount}`;
 
+}
+function startSpinAnimation() {
+  const spinInterval = setInterval(() => {
+    updateReelsAnimation();
+  }, 100); // Adjust the interval as needed
+
+  setTimeout(() => {
+    clearInterval(spinInterval); // Stop the spinning animation after a certain time
+    stopReels();
+  }, 3000); // Adjust the duration as needed
+}
 function handleSpin() {
   if (playerBalance < betAmount) {
     alert("Insufficient balance. Please add more credits.");
@@ -47,28 +66,34 @@ function handleSpin() {
 
   playerBalance -= betAmount;
 
-  getWinner(); // No need to call getSpinResults here
 
   updateReelsAnimation();
-
   setTimeout(() => {
-    stopReels();
+  stopReels();
   }, 3000);
 
   playerBalance += winningAmount;
-  winningAmount = 0; // Move this line after updating the balance
+  winningAmount = 0;
 
   render();
 }
 
+let currentSymbolIndex = 0; // Add this variable to keep track of the current symbol index
+
 function updateReelsAnimation() {
-  reels.forEach(reel => {
+  reels.forEach((reel, index) => {
     const symbolContainers = reel.querySelectorAll('.symbol');
     symbolContainers.forEach(container => {
-      container.classList.toggle('spin-container', true);
+      const symbolIndex = (currentSymbolIndex + index) % SM_RATIO.length;
+      const symbol = SM_RATIO[symbolIndex];
+      const symbolData = SM_LOOKUP[symbol];
+      container.style.backgroundImage = `url(${symbolData.img})`;
     });
   });
+
+  currentSymbolIndex++; // Increment the currentSymbolIndex for the next update
 }
+
 
 function stopReels() {
   reels.forEach(reel => {
