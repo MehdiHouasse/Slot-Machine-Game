@@ -1,38 +1,38 @@
-/* Reset default margin and padding */
-body,
-h1,
-h2,
-h3,
-p,
-ul,
-li {
-  margin: 0;
-  padding: 0;
-}
-
-/* Global styles */
 body {
-  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   background-color: #f0f0f0;
+  background-image: url('imgs/slot-machine.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 /* Slot machine container */
-.slot-machine {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.slot-machine-container {
+  position: center;
+  background-image: url('imgs/slot-machine.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
   min-height: 100vh;
-  background-color: lightgrey;
+  width: 20%;
+
 }
 
 /* Reels container */
 .reels-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 30px;
-  margin-top: 20px;
+  gap: 20px;
+  z-index: 1;
 }
 
 /* Reel */
@@ -40,16 +40,16 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   background-color: white;
-  border: 20px solid rgba(245, 5, 5, 0.92);
-  padding: 150px;
-  width: 150px;
-  /* Adjust reel width */
-  height: 300px;
-  /* Adjust reel height */
+  border: 10px solid rgba(245, 5, 5, 0.92);
+  padding: 20px;
+  width: 430px;
+  height: 200px;
   overflow: hidden;
-  /* Hide overflowing symbols */
+  perspective: 600px;
+  transform-style: preserve-3d;
+  transform: rotateX(0);
 }
 
 /* Symbols */
@@ -57,16 +57,64 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px;
-  /* Adjust symbol height */
-  width: 100px;
-  /* Adjust symbol width */
-  opacity: 0;
-  /* Hide symbols initially */
+  height: 100%;
+  width: 100%;
+  background-color: lightgray;
+  border: 2px solid gray;
 }
 
+.symbol-1 {
+  background-image: url('imgs/bar.png');
+}
+
+.symbol-2 {
+  background-image: url('imgs/bell.png');
+}
+
+.symbol-3 {
+  background-image: url('imgs/cherries.png');
+}
+
+.symbol-4 {
+  background-image: url('imgs/lemon.png');
+}
+
+.symbol-5 {
+  background-image: url('imgs/seven.png');
+}
+
+.result-display {
+
+  font-size: 60px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  padding: 50px;
+  background-color: rgba(189, 176, 176, 0.8);
+  color: black;
+  border-radius: 50px;
+  box-shadow: 0px 4px 8px rgba(26, 23, 23, 0.2);
+}
+
+/* animation for the result display */
+.result-display.animate {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 /* Spin button */
 .spin-button {
+  position: relative;
   display: inline-block;
   width: 100px;
   height: 40px;
@@ -87,7 +135,6 @@ body {
 
   100% {
     transform: translateY(-900px);
-    /* Adjust to the desired spin distance */
   }
 }
 
@@ -95,7 +142,6 @@ body {
 @keyframes stop {
   0% {
     transform: translateY(-900px);
-    /* Start from the spin's end position */
   }
 
   100% {
@@ -103,7 +149,10 @@ body {
   }
 }
 
-/* Apply animations to symbols */
+/* Button animation */
+.spin-button:hover {
+  background-color: #ff8c00;
+}
 .spin-button.clicked~.reels-container .reel .symbol {
   animation: spin 3s cubic-bezier(0.35, 0.65, 0.25, 1) forwards;
 }
@@ -111,8 +160,17 @@ body {
 .spin-button.stopped~.reels-container .reel .symbol {
   animation: stop 1s ease-out forwards;
 }
+/* Spinning animation for the symbols */
+.spin-container {
+  animation: spin-container 3s cubic-bezier(0.35, 0.65, 0.25, 1) infinite;
+}
 
-/* Button animation */
-.spin-button:hover {
-  background-color: #ff8c00;
+@keyframes spin-container {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-600px);
+  }
 }

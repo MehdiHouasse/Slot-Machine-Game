@@ -4,39 +4,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="js/main.js"></script>
   <link rel="stylesheet" href="css/main.css">
-  <title>Slot Machine</title>
+  <title>Slot Machine Game</title>
 </head>
 
 <body>
-  <div class="slot-machine">
-    <div class="reels-container">
-      <div class="reel">
-        <div class="symbol"><img id="bar" src="imgs/bar.png" alt="Symbol 1"></div>
-        <div class="symbol"><img id="bell" src="imgs/bell.png" alt="Symbol 2"></div>
-        <div class="symbol"><img id="cherries" src="imgs/cherries.png" alt="Symbol 3"></div>
-        <div class="symbol"><img id="lemon" src="imgs/lemon.png" alt="Symbol 3"></div>
-        <div class="symbol"><img id="seven" src="imgs/seven.png" alt="Symbol 3"></div>
-      </div>
-      <div class="reel">
-        <div class="symbol"><img id="bar1" src="imgs/bar.png" alt="Symbol 1"></div>
-        <div class="symbol"><img id="bell1" src="imgs/bell.png" alt="Symbol 2"></div>
-        <div class="symbol"><img id="cherries1" src="imgs/cherries.png" alt="Symbol 3"></div>
-        <div class="symbol"><img id="lemon1" src="imgs/lemon.png" alt="Symbol 3"></div>
-        <div class="symbol"><img id="seven1" src="imgs/seven.png" alt="Symbol 3"></div>
-      </div>
-      <div class="reel">
-        <div class="symbol"><img id="bar2" src="imgs/bar.png" alt="Symbol 1"></div>
-        <div class="symbol"><img id="bell2" src="imgs/bell.png" alt="Symbol 2"></div>
-        <div class="symbol"><img id="cherries2" src="imgs/cherries.png" alt="Symbol 3"></div>
-        <div class="symbol"><img id="lemon2" src="imgs/lemon.png" alt="Symbol 3"></div>
-        <div class="symbol"><img id="seven2" src="imgs/seven.png" alt="Symbol 3"></div>
+  <div class="slot-machine-container">
+    <div class="result-display"></div>
+    <div class="slot-machine">
+      <div class="reels-container">
+        <div class="reel">
+          <div class="symbol-container">
+            <div class="symbol symbol-1"><img src="imgs/bar.png" alt="Symbol 1"></div>
+            <div class="symbol symbol-2"><img src="imgs/bell.png" alt="Symbol 2"></div>
+            <div class="symbol symbol-3"><img src="imgs/cherries.png" alt="Symbol 3"></div>
+            <div class="symbol symbol-4"><img src="imgs/lemon.png" alt="Symbol 4"></div>
+            <div class="symbol symbol-5"><img src="imgs/seven.png" alt="Symbol 5"></div>
+          </div>
+        </div>
+        <!-- Repeat for the other two reels -->
+        <div class="reel">
+          <div class="symbol-container">
+            <div class="symbol symbol-1"><img src="imgs/bar.png" alt="Symbol 1"></div>
+            <div class="symbol symbol-2"><img src="imgs/bell.png" alt="Symbol 2"></div>
+            <div class="symbol symbol-3"><img src="imgs/cherries.png" alt="Symbol 3"></div>
+            <div class="symbol symbol-4"><img src="imgs/lemon.png" alt="Symbol 4"></div>
+            <div class="symbol symbol-5"><img src="imgs/seven.png" alt="Symbol 5"></div>
+          </div>
+        </div>
+        <div class="reel">
+          <div class="symbol-container">
+            <div class="symbol symbol-1"><img src="imgs/bar.png" alt="Symbol 1"></div>
+            <div class="symbol symbol-2"><img src="imgs/bell.png" alt="Symbol 2"></div>
+            <div class="symbol symbol-3"><img src="imgs/cherries.png" alt="Symbol 3"></div>
+            <div class="symbol symbol-4"><img src="imgs/lemon.png" alt="Symbol 4"></div>
+            <div class="symbol symbol-5"><img src="imgs/seven.png" alt="Symbol 5"></div>
+          </div>
+        </div>
       </div>
     </div>
+    </div>
+    <img class="slot-machine-background" src="imgs/slot-machine.png" alt="Slot Machine Background">
   </div>
   <button class="spin-button">Spin</button>
-
+  <script src="js/main.js"></script>
 </body>
 
 </html>
