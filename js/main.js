@@ -10,20 +10,22 @@ const SM_LOOKUP = {
 const SM_RATIO = ['seven', 'bell', 'bell', 'lemon', 'lemon', 'lemon', 'bar', 'bar', 'bar', 'bar', 'cherries', 'cherries', 'cherries', 'cherries', 'cherries'];
 
 /*----- state variables -----*/
+let symbolCounts = {};
 let playerBalance;
 let betAmount;
 let reelPositions;
 let winningAmount;
+let stoppingPoint;
 
 /*----- cached elements  -----*/
 //const pResultEl = document.getElementById('p-result');
-const reels = document.querySelectorAll('.box');
-const spinButton = document.querySelector('.buttons');
+const doors = document.querySelectorAll('.door');
 document.querySelectorAll('.door');
 
 /*----- event listeners -----*/
 document.querySelector('#spinner').addEventListener('click', handleSpin);
 document.querySelector('#reseter').addEventListener('click', init);
+document.querySelector('#place-bet').addEventListener('click', handlePlaceBet);
 
 
 /*----- functions -----*/
@@ -31,22 +33,40 @@ document.querySelector('#reseter').addEventListener('click', init);
 function init() {
   playerBalance = 100;
   betAmount = 20;
-  reelPositions = [];
+  reelPositions = ['bell','bell','bell'];
   winningAmount = 0;
   currentSymbolIndex = 0;
-  startSpinAnimation();
+  //startSpinAnimation();
   render();
 }
-function renderResults() {
-  pResultEl.src = RPS_LOOKUP[results.p].img;
-  pResultEl.style.borderColor = winner === 'p' ? 'grey' : 'white';
-}
+// function renderResults() {
+//   pResultEl.src = RPS_LOOKUP[results.p].img;
+//   pResultEl.style.borderColor = winner === 'p' ? 'grey' : 'white';
+// }
 function render() {
-  updateReelsAnimation();
+  // if (reelPositions.length){
+  doors.forEach((value,idx) => {
+    value.style.backgroundImage = `url(${SM_LOOKUP[reelPositions[idx]].img})`;
+  })
+  // updateReelsAnimation();
   const outcome = getWinner();
+  console.log(outcome);
   const winningAmountDisplay = document.getElementById('winning-amount-display');
   winningAmountDisplay.textContent = `Winning Amount: $${winningAmount}`;
 
+}
+function handlePlaceBet() {
+  const betInput = document.getElementById('bet-amount');
+  const userBet = parseInt(betInput.value);
+
+  if (isNaN(userBet) || userBet <= 0 || userBet > playerBalance) {
+    alert("Invalid bet amount. Please enter a valid bet.");
+    return;
+  }
+
+  betAmount = userBet;
+  playerBalance -= betAmount;
+  render();
 }
 function startSpinAnimation() {
   const spinInterval = setInterval(() => {
@@ -55,65 +75,110 @@ function startSpinAnimation() {
 
   setTimeout(() => {
     clearInterval(spinInterval); // Stop the spinning animation after a certain time
-    stopReels();
+    //stopReels();
+    render();
   }, 3000); // Adjust the duration as needed
 }
 function handleSpin() {
-  if (playerBalance < betAmount) {
-    alert("Insufficient balance. Please add more credits.");
-    return;
-  }
 
-  playerBalance -= betAmount;
-
-
-  updateReelsAnimation();
-  setTimeout(() => {
-  stopReels();
-  }, 3000);
-
-  playerBalance += winningAmount;
-  winningAmount = 0;
-
-  render();
-}
-
-let currentSymbolIndex = 0; // Add this variable to keep track of the current symbol index
-
-function updateReelsAnimation() {
-  reels.forEach((reel, index) => {
-    const symbolContainers = reel.querySelectorAll('.symbol');
-    symbolContainers.forEach(container => {
-      const symbolIndex = (currentSymbolIndex + index) % SM_RATIO.length;
-      const symbol = SM_RATIO[symbolIndex];
-      const symbolData = SM_LOOKUP[symbol];
-      container.style.backgroundImage = `url(${symbolData.img})`;
-    });
-  });
-
-  currentSymbolIndex++; // Increment the currentSymbolIndex for the next update
-}
-
-
-function stopReels() {
-  reels.forEach(reel => {
-    const symbolContainers = reel.querySelectorAll('.symbol');
-    symbolContainers.forEach(container => {
-      container.classList.toggle('spin-container', false);
-    });
-  });
-
-  render();
-}
-
-function getWinner() {
-  const symbolCounts = {};
+  symbolCounts = {};
 
   for (let i = 0; i < 3; i++) {
     const randomIndex = Math.floor(Math.random() * SM_RATIO.length);
     reelPositions[i] = SM_RATIO[randomIndex];
     symbolCounts[reelPositions[i]] = (symbolCounts[reelPositions[i]] || 0) + 1;
   }
+  if (playerBalance < betAmount) {
+    alert("Insufficient balance. Please add more credits.");
+    return;
+  }
+
+  playerBalance -= betAmount;
+  stoppingPoint = Math.floor(Math.random() * SM_RATIO.length);
+  startSpinAnimation();
+  updateReelsAnimation();
+  setTimeout(() => {
+
+    //stopReels();
+  }, 3000);
+  playerBalance += winningAmount;
+  winningAmount = 0;
+
+  render();
+}
+
+//  let currentSymbolIndex = 0; //variable to keep track of the current symbol index
+// function updateReelsAnimation(){
+//   for (){
+
+//   }
+// }
+
+function updateReelsAnimation() {
+  for (let i = 0; i < doors.length; i++) {
+    const symbolIndex = Math.floor(Math.random()*SM_RATIO.length)
+    let symbol = SM_RATIO[symbolIndex]
+    // const symbolContainer = doors[i].querySelector('.spin-container');
+    doors[i].style.backgroundImage = `url(${SM_LOOKUP[symbol].img})`;
+  }
+
+  // currentSymbolIndex;
+}
+
+
+// function updateReelsAnimation() {
+//   const symbolIndex = currentSymbolIndex % SM_RATIO.length;
+//   console.log(symbolIndex)
+//   doors[0].style.backgroundImage = `url(${SM_LOOKUP[SM_RATIO[symbolIndex]].img})`;
+//   doors[1].style.backgroundImage = `url(${SM_LOOKUP[SM_RATIO[(symbolIndex + 1) % SM_RATIO.length]].img})`;
+//   doors[2].style.backgroundImage = `url(${SM_LOOKUP[SM_RATIO[(symbolIndex + 2) % SM_RATIO.length]].img})`;
+
+//   currentSymbolIndex++;
+
+//   // if (currentSymbolIndex < SM_RATIO.length) {
+//   //   requestAnimationFrame(updateReelsAnimation); //
+//   // } else {
+//   //   animationComplete();
+//   // }
+// }
+
+
+
+
+
+function animationComplete() {
+  stopReels();
+  // Call render when the animation stops
+}
+
+
+
+
+// function stopReels() {
+//   console.log(doors);
+//   doors.forEach(reel => {
+//     const symbolContainers = reel.querySelectorAll('.doors');
+//     // console.log(symbolContainers);
+//     symbolContainers.forEach(container => {
+//       container.classList.toggle('spin-container', false);
+//     });
+
+//   });
+//   console.log(reelPositions);
+//   doors[0].style.backgroundImage = `url(${SM_LOOKUP[reelPositions[0]].img})`;
+//   doors[1].style.backgroundImage = `url(${SM_LOOKUP[reelPositions[1]].img})`
+//   doors[2].style.backgroundImage = `url(${SM_LOOKUP[reelPositions[2]].img})`
+//    render();
+// }
+
+function getWinner() {
+  // const symbolCounts = {};
+
+  // for (let i = 0; i < 3; i++) {
+  //   const randomIndex = Math.floor(Math.random() * SM_RATIO.length);
+  //   reelPositions[i] = SM_RATIO[randomIndex];
+  //   symbolCounts[reelPositions[i]] = (symbolCounts[reelPositions[i]] || 0) + 1;
+  // }
 
   const winningCombinations = [
     { symbols: ['bar', 'bar', 'bar'], outcome: 'win' },
@@ -127,9 +192,9 @@ function getWinner() {
   const winningCombination = winningCombinations.find(combination => {
     return combination.symbols.every(symbol => symbolCounts[symbol] === 3);
   });
-
+console.log(winningCombination);
   winningAmount = winningCombination ? calculateWinningAmount() : 0;
-  return winningCombination ? winningCombination.outcome : 'lose';
+  return winningCombination ? 'win' : 'lose';
 }
 
 function calculateWinningAmount() {

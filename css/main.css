@@ -40,7 +40,6 @@ body {
 .boxes {
   transition: transform 1s ease-in-out;
 }
-
 .box {
   display: flex;
   justify-content: center;
@@ -64,13 +63,45 @@ button {
   background-color: #3498db;
   color: white;
 }
+/* Add a form section */
+.form-container {
+  margin-top: 20px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-.info {
-  position: fixed;
-  bottom: 0;
+.form-container h2 {
+  margin-bottom: 10px;
+  font-size: 5rem;
+}
+
+.form-container label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-container input[type="text"],
+.form-container input[type="number"] {
   width: 100%;
-  text-align: center;
   padding: 10px;
-  background-color: #333;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+
+.form-container button {
+  background-color: #3498db;
   color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.form-container button:hover {
+  background-color: #258cd1;
 }
