@@ -6,10 +6,13 @@ body {
   font-family: Arial, sans-serif;
 }
 
+h1 {}
+
 #app {
+  position: relative;
   width: 100%;
   height: 100%;
-  /* background: url('../imgs/slot-machine.png'); */
+  background: url('../imgs/SM.png');
   background-size: cover;
   display: flex;
   flex-direction: column;
@@ -17,91 +20,107 @@ body {
   align-items: center;
 }
 
+.centered-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .doors {
   display: flex;
 }
+
 .door img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Maintain aspect ratio and cover the container */
+  background-repeat: no-repeat;
+  background-size: 90% 90%;
 }
 
 .door {
-  background: #fafafa;
-  width: 300px;
-  height: 400px;
+  background: #9d56b3;
+  width: 600px;
+  height: 600px;
   object-fit: cover;
   overflow: hidden;
-  border-radius: 5px;
-  margin: 5px;
+  border-radius: 25px;
+  overflow: hidden;
+  gap: 70px;
+  margin: 10px 5px;
+  border: 15px solid #3a102e;
 }
-
-.boxes {
-  transition: transform 1s ease-in-out;
-}
-.box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 3rem;
-  height: auto;
-  width: auto;
-}
-
 .buttons {
   margin: 1rem 0 2rem 0;
 }
 
 button {
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 3rem;
   margin: 0 0.2rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
   padding: 10px 15px;
-  background-color: #3498db;
-  color: white;
+  background-color: #e6e648;
+  color: black;
 }
-/* Add a form section */
+
 .form-container {
   margin-top: 20px;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
+  background-color: rgb(210, 218, 234);
+  padding: 40px;
+  border-radius: 50px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .form-container h2 {
   margin-bottom: 10px;
-  font-size: 5rem;
+  font-size: 3rem;
 }
 
-.form-container label {
-  display: block;
-  margin-bottom: 5px;
+#winning-amount-display {
+  font-size: 50px;
+  color: rgb(10, 11, 10);
+  margin-top: 10px;
 }
 
-.form-container input[type="text"],
-.form-container input[type="number"] {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  font-size: 1rem;
-  margin-bottom: 15px;
+#balance-amount,
+#bet-amount {
+  font-size: 50px;
+  color: #333;
+  margin-top: 10px;
 }
 
-.form-container button {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
+#balance-display {
+  font-size: 50px;
+  color: rgb(0, 0, 0);
+  margin-top: 20px;
 }
 
-.form-container button:hover {
-  background-color: #258cd1;
+.popup {
+  display: none;
+  position: fixed;
+  margin-top: 370px;
+  top: 50%;
+  left: 50%;
+  height: 100px;
+  width: 500px;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 215, 0);
+  border-radius: 50px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  z-index: 5;
+}
+
+.popup h2 {
+  font-size: 2400px;
+  margin-bottom: 10px;
+  color: #4CAF50;
+}
+.win-message {
+  font-size: 50px;
 }
