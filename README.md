@@ -50,3 +50,10 @@ The Slot Machine Game is a basic web-based game that simulates a slot machine ex
 6. Your balance will be updated according to your wins and bets.
 ## getting started
 Click here : https://mehdihouasse.github.io/Slot-Machine-Game/
+## Planned future enhancements
+Performance Optimization:
+1. Continuously improve loading times and overall responsiveness.
+2. Implement caching mechanisms and minimize resource-intensive processes.
+Community and Social Features:
+1. Incorporate social networking elements like user profiles, friending, and activity feeds.
+2. Introduce discussion forums, user-generated content sharing, or collaborative features.
