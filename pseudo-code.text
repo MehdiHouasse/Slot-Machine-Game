@@ -1,0 +1,35 @@
+Initialize player's balance
+Set initial bet amount
+Set available symbols ( cherries, bells, sevens, bar etc.)
+Set payout table for symbol combinations and their payouts
+
+Function displaySlotMachine(slotValues):
+    Display the slot machine interface with the provided slot values
+
+Function calculatePayout(symbolCombination):
+    Look up symbolCombination in the payout table
+    Return the corresponding payout amount
+
+Loop:
+    Display player's balance
+
+    Prompt player for bet amount
+    If bet amount is greater than player's balance:
+        Display "Insufficient balance"
+        Continue to the next iteration of the loop
+
+    Generate random values for three slots (using available symbols)
+    Display the spinning animation of the slots
+
+    Display the final slot values using displaySlotMachine function
+
+    Calculate payout based on the slot values using calculatePayout function
+    Add the payout to the player's balance
+
+    Display the result and the amount won
+
+    Ask the player if they want to play again
+    If player chooses to quit:
+        Display final balance and exit the loop
+
+End Loop
